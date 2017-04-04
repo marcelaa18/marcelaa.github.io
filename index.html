@@ -2,16 +2,51 @@
 
 <!DOCTYPE html>
 <html>
-
-<ul>
-  <li><a href="#data">Data Visualization</a></li>
-  <li><a href="#map">Map Visualization</a></li>
-  <li><a href="#D3">Sample D3 Code</a></li>
-  <li><a href="#midtermslides">Mid-Term Slides</a></li>
-  <link href="https://fonts.googleapis.com/css?family=Abhaya+Libre" rel="stylesheet">
-</ul>
-
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Abhaya+Libre" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400" rel="stylesheet">
+    <title></title>
 <style>
+
+html {
+  color: #ffffff;
+  background: url(img/trump5.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+h1 {
+  font-family: 'Abhaya Libre', serif;
+  font-weight: normal;
+  color: #fff;
+  font-size: 55px;
+  background: rgba(5,46,61,.85);
+    padding: 10px;
+    display:inline;
+  margin: 10px 0 10px 0;
+}
+
+h2 {
+  font-family: 'Abhaya Libre', serif;
+  font-weight: normal;
+  color: #fff;
+  font-size: 32px;
+  background: rgba(5,46,61,.85);
+    padding: 10px;
+    display:inline;
+}
+
+p {
+  font-family: 'Lato', sans-serif;
+  font-weight: 300; 
+  font-size: 18px;
+  line-height: 24px;
+  color: #fff;
+}
 
 .node rect {
   cursor: move;
@@ -34,13 +69,48 @@
   stroke-opacity: .5;
 }
 
+
+        /* jssor slider bullet navigator skin 13 css */
+        /*
+        .jssorb13 div           (normal)
+        .jssorb13 div:hover     (normal mouseover)
+        .jssorb13 .av           (active)
+        .jssorb13 .av:hover     (active mouseover)
+        .jssorb13 .dn           (mousedown)
+        */
+        .jssorb13 {
+            position: absolute;
+        }
+        .jssorb13 div, .jssorb13 div:hover, .jssorb13 .av {
+            position: absolute;
+            /* size of bullet elment */
+            width: 21px;
+            height: 21px;
+            background: url('img/b13.png') no-repeat;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .jssorb13 div { background-position: -5px -5px; }
+        .jssorb13 div:hover, .jssorb13 .av:hover { background-position: -35px -5px; }
+        .jssorb13 .av { background-position: -65px -5px; }
+        .jssorb13 .dn, .jssorb13 .dn:hover { background-position: -95px -5px; }
 </style>
+
 
 <body>
 
-  <div class="media-body" style="padding-left:100px; padding-right:100px; padding-top:70px; width: 750px;">
-    <h1 class="media-heading">Tracking Trump's Budget Cuts</h1>
+<ul>
 
+  <li><a href="#data">Data Visualization</a></li>
+  <li><a href="#map">Map Visualization</a></li>
+  <li><a href="#D3">Sample D3 Code</a></li>
+  <li><a href="#midtermslides">Mid-Term Slides</a></li>
+  
+</ul>
+
+  <div class="media-body" style="padding-left:100px; padding-right:100px; padding-top:80px; width: 850px;">
+  
+    <h1 class="media-heading">Tracking Trump's Budget Cuts</h1>
     <a name="data"></a>
     <p>In mid-March, Trump announced his "skinny budget" for the 2018 fiscal year including a 13% budget cut to the Department of Housing and Urban Development. Our objective is to highlight the programs that Trump is proposing to cut and visualize which ethnic and income groups would be most affected by the proposed cuts in the state of Pennsylvania based on the most recent, complete funding data, which is from 2014. We want to inform the general public about the housing programs with visualizations that can present the complex information in a simple format. </p>
   </div>
@@ -49,9 +119,9 @@
 
  <!-- Left-aligned -->
  <a name="data"></a>
-  <div class="media-body" style="padding-left:100px; padding-right:100px; width: 750px;">
+  <div class="media-body" style="padding-left:100px; padding-right:100px; padding-top: 40px; width: 850px;">
   
-    <h4 class="media-heading">First Visualization of Data</h4>
+    <h2 class="media-heading">First Visualization of Data</h2>
     <p>For our first look at the data we explored the CDBG recipient in Pennsylvania and how much funding each received in 2014. Counties, towns, and even the state of PA are all recipients of these grants.</p>
   </div>
 </div>
@@ -60,7 +130,8 @@
   <div class="media-left">
     <img src="img/Tree1.jpg" class="media-object" style="width:900px; padding-left:100px; padding-right:100px">
     <br>
-    <img src="img/Tree2.jpg" class="media-object" style="width:900px; padding-left:100px; padding-right:100px">
+    <br>
+    <img src="img/Tree2.jpg" class="media-object" style="width:900px; padding-left:100px; padding-bottom: 100px; padding-right:100px">
   </div>
 
 
@@ -70,12 +141,12 @@
   
    <div class="media-body" style="padding-left:100px; padding-right:100px; width: 750px;">
  
-    <h4 class="media-heading">Mapping the Data</h4>
+    <h2 class="media-heading">Mapping the Data</h2>
     <p>This chloropleth map shows how much each county receives in funding from Community Development Block Grants. Philadelphia and Pittsburg are notated to highlight how funding from these grants tends to cluster around the two largest cities in the state.</p>
   </div>
 <div class="media">
   <div class="media-left">
-  <img src="img/BlueMap3.jpg" class="media-object" style="width:900px; padding-left:100px; padding-right:100px">
+  <img src="img/BlueMap3.jpg" class="media-object" style="width:900px; padding-left:100px; padding-bottom:100px; padding-right:100px">
   
   </div>
  
@@ -89,7 +160,7 @@
 <div class="media">
   <div class="media-body" style="padding-left:100px; padding-right:100px">
  
-    <h4 class="media-heading">Sample D3 Code</h4>
+    <h2 class="media-heading">Sample D3 Code</h2>
     <p>Below is a sample interactive sankey visualization using code from D3.<br> 
     </p>
     <a href="http://bl.ocks.org/d3noob/c9b90689c1438f57d649">Go to code source</a>
@@ -97,7 +168,7 @@
 </div>
 <br>
 <a name="D3"></a>
-<p id="chart" style="width:1200px; padding-left:100px; padding-right:100px">
+<p id="chart" style="width:1200px; padding-left:100px; padding-right:100px padding-bottom:100px">
 
 <script src="https://d3js.org/d3.v3.min.js"></script>
 <script src="js/sankey.js"></script>
@@ -229,25 +300,16 @@ d3.csv("sankey.csv", function(error, data) {
 });
 
 </script>
-<br>
-<br>
-<br>
-<br>
-</body>
-</html>
+
 
 
 <!--SCROLLING SECTION-->
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
-</head>
+
 
 <div class="media">
   <div class="media-body" style="padding-left:100px; padding-right:100px">
  
-    <h4 class="media-heading">Midterm presentation slides</h4>
+    <h2 class="media-heading">Midterm Presentation Slides</h2>
     <p>Below are the slides of our Midterm presentation. They include changes regarding the last feedback received.<br> 
     </p>
   </div>
@@ -255,7 +317,6 @@ d3.csv("sankey.csv", function(error, data) {
 <br>
 
 <a name="midtermslides"></a>
-<body style="padding:0px; margin:0px; background-color:#fff;font-family:'Open Sans',sans-serif,arial,helvetica,verdana">
 
     <!-- #region Jssor Slider Begin -->
     <!-- Generator: Jssor Slider Maker -->
@@ -302,32 +363,6 @@ d3.csv("sankey.csv", function(error, data) {
             /*responsive code end*/
         };
     </script>
-    <style>
-        /* jssor slider bullet navigator skin 13 css */
-        /*
-        .jssorb13 div           (normal)
-        .jssorb13 div:hover     (normal mouseover)
-        .jssorb13 .av           (active)
-        .jssorb13 .av:hover     (active mouseover)
-        .jssorb13 .dn           (mousedown)
-        */
-        .jssorb13 {
-            position: absolute;
-        }
-        .jssorb13 div, .jssorb13 div:hover, .jssorb13 .av {
-            position: absolute;
-            /* size of bullet elment */
-            width: 21px;
-            height: 21px;
-            background: url('img/b13.png') no-repeat;
-            overflow: hidden;
-            cursor: pointer;
-        }
-        .jssorb13 div { background-position: -5px -5px; }
-        .jssorb13 div:hover, .jssorb13 .av:hover { background-position: -35px -5px; }
-        .jssorb13 .av { background-position: -65px -5px; }
-        .jssorb13 .dn, .jssorb13 .dn:hover { background-position: -95px -5px; }
-    </style>
     <div id="jssor_1" style="position:relative;margin:0 auto;top:0px;left:0px;width:600px;height:500px;overflow:hidden;visibility:hidden;">
         <!-- Loading Screen -->
         <div data-u="loading" style="position:absolute;top:0px;left:0px;background-color:rgba(0,0,0,0.7);">
