@@ -27,7 +27,8 @@ li a:hover {
 }
 
 ul {
-   top: 0;
+    position: fixed;
+    top: 0;
     width: 100%;
 }
 
@@ -51,4 +52,3 @@ ul {
 .link:hover {
   stroke-opacity: .5;
 }
-

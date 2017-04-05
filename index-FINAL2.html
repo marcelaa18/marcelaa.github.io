@@ -1,5 +1,3 @@
-<link href="css/navcss.css" rel="stylesheet" />
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css?family=Abhaya+Libre" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400" rel="stylesheet">
-    <title></title>
+    <link href="css/navcss2.css" rel="stylesheet" type="text/css"/>
+    <title>Tracking Trump's Budget Cuts</title>
 <style>
 
 html {
@@ -52,48 +51,64 @@ p {
   cursor: move;
   fill-opacity: .9;
   shape-rendering: crispEdges;
-}
+  }
 
-.node text {
+  .node text {
   pointer-events: none;
   text-shadow: 0 1px 0 #fff;
-}
+  }
 
-.link {
+  .link {
   fill: none;
   stroke: #000;
   stroke-opacity: .2;
-}
+  }
 
-.link:hover {
+  .link:hover {
   stroke-opacity: .5;
-}
+  }
 
+  #chart {
+  width:900px;
+  margin-right:100px;
+  margin-bottom:100px;
+  background-color: white;
+  }
 
-        /* jssor slider bullet navigator skin 13 css */
-        /*
-        .jssorb13 div           (normal)
-        .jssorb13 div:hover     (normal mouseover)
-        .jssorb13 .av           (active)
-        .jssorb13 .av:hover     (active mouseover)
-        .jssorb13 .dn           (mousedown)
-        */
-        .jssorb13 {
-            position: absolute;
-        }
-        .jssorb13 div, .jssorb13 div:hover, .jssorb13 .av {
-            position: absolute;
-            /* size of bullet elment */
-            width: 21px;
-            height: 21px;
-            background: url('img/b13.png') no-repeat;
-            overflow: hidden;
-            cursor: pointer;
-        }
-        .jssorb13 div { background-position: -5px -5px; }
-        .jssorb13 div:hover, .jssorb13 .av:hover { background-position: -35px -5px; }
-        .jssorb13 .av { background-position: -65px -5px; }
-        .jssorb13 .dn, .jssorb13 .dn:hover { background-position: -95px -5px; }
+  .jssorb13 {
+  position: absolute;
+  }
+
+  .jssorb13 div, .jssorb13 div:hover, .jssorb13 .av {
+  position: absolute;
+  /* size of bullet elment */
+  width: 21px;
+  height: 21px;
+  background: url('img/b13.png') no-repeat;
+  overflow: hidden;
+  cursor: pointer;
+  }
+
+  .jssorb13 div { 
+    background-position: -5px -5px;
+  }
+
+  .jssorb13 div:hover, .jssorb13 .av:hover {
+    background-position: -35px -5px;
+  }
+
+  .jssorb13 .av {
+    background-position: -65px -5px;
+  }
+
+  .jssorb13 .dn, .jssorb13 .dn:hover {
+    background-position: -95px -5px;
+  }
+
+  #main-container {
+    margin-left: 100px;
+  }
+  
 </style>
 
 
@@ -106,78 +121,162 @@ p {
   <li><a href="#D3">Sample D3 Code</a></li>
   <li><a href="#midtermslides">Mid-Term Slides</a></li>
   
+  <script function checkScroll(){
+    var startY = $('.navbar').height() * 2; //The point where the navbar changes in px
+
+    if($(window).scrollTop() > startY){
+        $('.navbar').addClass("scrolled");
+    }else{
+        $('.navbar').removeClass("scrolled");
+    }
+}
+
+if($('.navbar').length > 0){
+    $(window).on("scroll load resize", function(){
+        checkScroll();
+    });
+}
+  </script>
+
 </ul>
 
-  <div class="media-body" style="padding-left:100px; padding-right:100px; padding-top:80px; width: 850px;">
-  
+<div id="main-container">
+  <div class="media-body" style="padding-right:100px; padding-top:80px; width: 850px;">
     <h1 class="media-heading">Tracking Trump's Budget Cuts</h1>
     <a name="data"></a>
-    <p>In mid-March, Trump announced his "skinny budget" for the 2018 fiscal year including a 13% budget cut to the Department of Housing and Urban Development. Our objective is to highlight the programs that Trump is proposing to cut and visualize which ethnic and income groups would be most affected by the proposed cuts in the state of Pennsylvania based on the most recent, complete funding data, which is from 2014. We want to inform the general public about the housing programs with visualizations that can present the complex information in a simple format. </p>
+    <p>In mid-March, Trump announced his "skinny budget" for the 2018 fiscal year including a 13% budget cut to the Department of Housing and Urban Development. Our objective is to highlight the programs that Trump is proposing to cut and visualize which ethnic and income groups would be most affected by the proposed cuts in the state of Pennsylvania based on the most recent, complete funding data, which is from 2014. We want to inform the general public about the housing programs with visualizations that can present the complex information in a simple format.</p>
   </div>
-</div>
-<br>
-
- <!-- Left-aligned -->
- <a name="data"></a>
-  <div class="media-body" style="padding-left:100px; padding-right:100px; padding-top: 40px; width: 850px;">
+  <!-- Left-aligned -->
+  <a name="data"></a>
+  <div class="media-body" style="padding-right:100px; padding-top: 40px; width: 850px;">
   
     <h2 class="media-heading">First Visualization of Data</h2>
     <p>For our first look at the data we explored the CDBG recipient in Pennsylvania and how much funding each received in 2014. Counties, towns, and even the state of PA are all recipients of these grants.</p>
   </div>
-</div>
-
-<div class="media">
-  <div class="media-left">
-    <img src="img/Tree1.jpg" class="media-object" style="width:900px; padding-left:100px; padding-right:100px">
-    <br>
-    <br>
-    <img src="img/Tree2.jpg" class="media-object" style="width:900px; padding-left:100px; padding-bottom: 100px; padding-right:100px">
+  <div class="media">
+    <div class="media-left">
+      <img src="img/Tree1.jpg" class="media-object" style="width:900px; padding-right:100px">
+      <br>
+      <br>
+      <img src="img/Tree2.jpg" class="media-object" style="width:900px; padding-bottom: 100px; padding-right:100px">
+    </div>
   </div>
-
-
-<a name="map"></a>
-
- <!-- Left-aligned -->
-  
-   <div class="media-body" style="padding-left:100px; padding-right:100px; width: 750px;">
- 
+  <a name="map"></a>
+  <!-- Left-aligned -->
+  <div class="media-body" style="padding-right:100px; width: 750px;">
     <h2 class="media-heading">Mapping the Data</h2>
     <p>This chloropleth map shows how much each county receives in funding from Community Development Block Grants. Philadelphia and Pittsburg are notated to highlight how funding from these grants tends to cluster around the two largest cities in the state.</p>
   </div>
-<div class="media">
-  <div class="media-left">
-  <img src="img/BlueMap3.jpg" class="media-object" style="width:900px; padding-left:100px; padding-bottom:100px; padding-right:100px">
-  
+  <div class="media">
+    <div class="media-left">
+      <img src="img/BlueMap3.jpg" class="media-object" style="width:900px; padding-bottom:100px; padding-right:100px">
+    </div>
   </div>
- 
+  <!--SANKEY CODE-->
+  <div class="media">
+    <div class="media-body" style="padding-right:100px">
+   
+      <h2 class="media-heading">Sample D3 Code</h2>
+      <p>Below is a sample interactive sankey visualization using code from D3.<br> 
+      </p>
+      <a href="http://bl.ocks.org/d3noob/c9b90689c1438f57d649">Go to code source</a>
+    </div>
+  </div>
+  <br>
+  <a name="D3"></a>
+  <div id="chart"></div>
+  <div class="media">
+    <div class="media-body" style="padding-right:100px">
+      <h2 class="media-heading">Midterm Presentation Slides</h2>
+      <p>Below are the slides of our Midterm presentation. They include changes regarding the last feedback received.<br> 
+      </p>
+    </div>
+  </div>
+  <a name="midtermslides"></a>
+  <div id="jssor_1" style="position:relative;top:0px;left:0px;width:600px;height:500px;overflow:hidden;visibility:hidden;">
+    <!-- Loading Screen -->
+    <div data-u="loading" style="position:absolute;top:0px;left:0px;background-color:rgba(0,0,0,0.7);">
+      <div style="filter: alpha(opacity=70); opacity: 0.7; position: absolute; display: block; top: 0px; left: 0px; width: 100%; height: 100%;">
+      </div>
+        <div style="position:absolute;display:block;background:url('img/loading.gif') no-repeat center center;top:0px;left:0px;width:100%;height:100%;">
+      </div>
+    </div>
+    <div data-u="slides" style="cursor:default;position:relative;top:0px;left:0px;width:600px;height:500px;overflow:hidden;">
+      <div>
+        <img data-u="image" src="img/01.jpg" />
+      </div>
+      <div>
+        <img data-u="image" src="img/02.jpg" />
+      </div>
+      <div>
+        <img data-u="image" src="img/03.jpg" />
+      </div>
+      <div>
+        <img data-u="image" src="img/04.jpg" />
+      </div>
+      <div>
+        <img data-u="image" src="img/05.jpg" />
+      </div>
+      <div>
+        <img data-u="image" src="img/06.jpg" />
+      </div>
+      <div>
+        <img data-u="image" src="img/07.jpg" />
+      </div>
+      <div>
+        <img data-u="image" src="img/08.jpg" />
+      </div>
+      <div>
+        <img data-u="image" src="img/09.jpg" />
+      </div>
+      <div>
+        <img data-u="image" src="img/10.jpg" />
+      </div>
+      <div>
+        <img data-u="image" src="img/11.jpg" />
+      </div>
+      <div>
+        <img data-u="image" src="img/12.jpg" />
+      </div>
+      <div>
+        <img data-u="image" src="img/13.jpg" />
+      </div>
+      <div>
+        <img data-u="image" src="img/14.jpg" />
+      </div>
+      <div>
+        <img data-u="image" src="img/15.jpg" />
+      </div>
+      <div>
+        <img data-u="image" src="img/16.jpg" />
+      </div>
+      <div>
+        <img data-u="image" src="img/17.jpg" />
+      </div>
+      <div>
+        <img data-u="image" src="img/18.jpg" />
+      </div>
+      <!-- Bullet Navigator -->
+      <div data-u="navigator" class="jssorb13" style="bottom:16px;right:16px;" data-autocenter="1">
+        <!-- bullet navigator item prototype -->
+        <div data-u="prototype" style="width:21px;height:21px;"></div>
+      </div>
+    </div>
+  </div>
 </div>
 
 
-<!--SANKEY CODE-->
-
-
-
-<div class="media">
-  <div class="media-body" style="padding-left:100px; padding-right:100px">
- 
-    <h2 class="media-heading">Sample D3 Code</h2>
-    <p>Below is a sample interactive sankey visualization using code from D3.<br> 
-    </p>
-    <a href="http://bl.ocks.org/d3noob/c9b90689c1438f57d649">Go to code source</a>
-  </div>
-</div>
-<br>
-<a name="D3"></a>
-<p id="chart" style="width:1200px; padding-left:100px; padding-right:100px padding-bottom:100px">
-
-<script src="https://d3js.org/d3.v3.min.js"></script>
-<script src="js/sankey.js"></script>
+<script src="https://d3js.org/d3.v3.min.js" type="text/javascript"></script>
+<script src="js/jssor.slider-23.0.0.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="js/sankey.js" type="text/javascript"></script>
+<script src="js/nav.js" type="text/javascript"></script>
 <script>
   
 var units = "Widgets";
 
 var margin = {top: 10, right: 10, bottom: 10, left: 10},
-    width = 700 - margin.left - margin.right,
+    width = 900 - margin.left - margin.right,
     height = 300 - margin.top - margin.bottom;
 
 var formatNumber = d3.format(",.0f"),    // zero decimal places
@@ -299,30 +398,7 @@ d3.csv("sankey.csv", function(error, data) {
   }
 });
 
-</script>
 
-
-
-<!--SCROLLING SECTION-->
-
-
-<div class="media">
-  <div class="media-body" style="padding-left:100px; padding-right:100px">
- 
-    <h2 class="media-heading">Midterm Presentation Slides</h2>
-    <p>Below are the slides of our Midterm presentation. They include changes regarding the last feedback received.<br> 
-    </p>
-  </div>
-</div>
-<br>
-
-<a name="midtermslides"></a>
-
-    <!-- #region Jssor Slider Begin -->
-    <!-- Generator: Jssor Slider Maker -->
-    <!-- Source: http://www.jssor.com -->
-    <script src="js/jssor.slider-23.0.0.min.js" type="text/javascript"></script>
-    <script type="text/javascript">
         jssor_1_slider_init = function() {
 
             var jssor_1_SlideshowTransitions = [
@@ -362,80 +438,10 @@ d3.csv("sankey.csv", function(error, data) {
             $Jssor$.$AddEvent(window, "orientationchange", ScaleSlider);
             /*responsive code end*/
         };
-    </script>
-    <div id="jssor_1" style="position:relative;margin:0 auto;top:0px;left:0px;width:600px;height:500px;overflow:hidden;visibility:hidden;">
-        <!-- Loading Screen -->
-        <div data-u="loading" style="position:absolute;top:0px;left:0px;background-color:rgba(0,0,0,0.7);">
-            <div style="filter: alpha(opacity=70); opacity: 0.7; position: absolute; display: block; top: 0px; left: 0px; width: 100%; height: 100%;"></div>
-            <div style="position:absolute;display:block;background:url('img/loading.gif') no-repeat center center;top:0px;left:0px;width:100%;height:100%;"></div>
-        </div>
-        <div data-u="slides" style="cursor:default;position:relative;top:0px;left:0px;width:600px;height:500px;overflow:hidden;">
-            <div>
-                <img data-u="image" src="img/01.jpg" />
-            </div>
-            <div>
-                <img data-u="image" src="img/02.jpg" />
-            </div>
-            <div>
-                <img data-u="image" src="img/03.jpg" />
-            </div>
-            <div>
-                <img data-u="image" src="img/04.jpg" />
-            </div>
-            <div>
-                <img data-u="image" src="img/05.jpg" />
-            </div>
-            <div>
-                <img data-u="image" src="img/06.jpg" />
-            </div>
-            <div>
-                <img data-u="image" src="img/07.jpg" />
-            </div>
-            <div>
-                <img data-u="image" src="img/08.jpg" />
-            </div>
-            <div>
-                <img data-u="image" src="img/09.jpg" />
-            </div>
-            <div>
-                <img data-u="image" src="img/10.jpg" />
-            </div>
-            <div>
-                <img data-u="image" src="img/11.jpg" />
-            </div>
-            <div>
-                <img data-u="image" src="img/12.jpg" />
-            </div>
-            <div>
-                <img data-u="image" src="img/13.jpg" />
-            </div>
-            <div>
-                <img data-u="image" src="img/14.jpg" />
-            </div>
-            <div>
-                <img data-u="image" src="img/15.jpg" />
-            </div>
-            <div>
-                <img data-u="image" src="img/16.jpg" />
-            </div>
-            <div>
-                <img data-u="image" src="img/17.jpg" />
-            </div>
-            <div>
-                <img data-u="image" src="img/18.jpg" />
-        </div>
-        <!-- Bullet Navigator -->
-        <div data-u="navigator" class="jssorb13" style="bottom:16px;right:16px;" data-autocenter="1">
-            <!-- bullet navigator item prototype -->
-            <div data-u="prototype" style="width:21px;height:21px;"></div>
-        </div>
-    </div>
-    <script type="text/javascript">jssor_1_slider_init();</script>
+
+  </script>
+  <script type="text/javascript">jssor_1_slider_init();</script>
     <!-- #endregion Jssor Slider End -->
-
-
-
-
 </body>
 </html>
 
