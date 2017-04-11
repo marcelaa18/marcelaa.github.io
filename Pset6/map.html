@@ -1,0 +1,154 @@
+
+<meta charset="utf-8">
+<style>
+  .states {
+    fill: none;
+    stroke: #fff;
+    stroke-linejoin: round;
+  }
+</style>
+
+<style>
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+#main {
+  width: 960px;
+}
+.axis .domain {
+  display: none;
+}
+</style>
+
+
+<style type='text/css'>
+  .my-legend .legend-title {
+    text-align: left;
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 90%;
+    }
+  .my-legend .legend-scale ul {
+    margin: 0;
+    padding: 0;
+    float: left;
+    list-style: none;
+    }
+  .my-legend .legend-scale ul li {
+    display: block;
+    float: left;
+    width: 50px;
+    margin-bottom: 6px;
+    text-align: center;
+    font-size: 80%;
+    list-style: none;
+    }
+  .my-legend ul.legend-labels li span {
+    display: block;
+    float: left;
+    height: 15px;
+    width: 50px;
+    }
+  .my-legend .legend-source {
+    font-size: 70%;
+    color: #999;
+    clear: both;
+    }
+  .my-legend a {
+    color: #777;
+    }
+</style>
+
+<body>
+
+
+
+<!-- map -->
+<div id="map"></div>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://d3js.org/d3-array.v1.min.js"></script>
+<script src="https://d3js.org/d3-geo.v1.min.js"></script>
+<script src="https://d3js.org/d3-queue.v3.min.js"></script>
+<script src="https://d3js.org/topojson.v2.min.js"></script>
+<script>
+
+// set width and height of graphic (map)
+var width = 960,
+    height = 500;
+
+var projection = d3.geoAlbersUsa()
+    .scale(1000)
+    .translate([width / 2, height / 2]);
+
+// d3 geopath for projection
+var path = d3.geoPath()
+    .projection(projection);
+
+// create SVG elements in map HTML element
+var svg = d3.select("#map").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+// set color
+var color = d3.scaleThreshold()
+    .domain([-0.5, -0.25, -0.1, 0.0, 0.1, 0.25, 0.5])
+    .range(['#2171b5','#6baed6','#bdd7e7','#eff3ff','#fee5d9','#fcae91','#fb6a4a','#cb181d']);
+
+
+
+// queue up the datasets, run 'ready' when loaded
+d3.queue()
+    .defer(d3.json, "data/us.json")
+    .defer(d3.tsv, "data/results2.tsv")
+    .await(ready);
+
+// create the graphic with this runction
+function ready(error, us, results2) {
+  if (error) throw error;
+
+  var victory_marginById = {}; // Create empty object for holding dataset
+
+  results2.forEach(function(d) {
+    victory_marginById[d.id] = +d.victory_margin; // Create property for each ID, give it value from victory_margin
+    // important: cast rate to numeric value (+)
+  });
+  
+  // create and style counties
+  svg.append("g")
+      .attr("class", "counties")
+    .selectAll("path")
+      .data(topojson.feature(us, us.objects.counties).features)
+    .enter().append("path")
+      .attr("d", path)
+      .style("fill", function(d) { return color(victory_marginById[d.id]); });
+
+  // create state outlines
+  svg.append("path")
+      .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a.id !== b.id; }))
+      .attr("class", "states")
+      .attr("d", path);
+}
+</script>
+<br>
+<div class='my-legend' style="margin-left: 260;">
+<div class='legend-title'>2016 General Election: Margin of Victory by County</div>
+<div class='legend-Clinton'>Clinton   Trump</div>
+<div class='legend-scale'>
+  <ul class='legend-labels'>
+    <li><span style='background:#2171b5;'></span>>50%</li>
+    <li><span style='background:#6baed6;'></span>25%</li>
+    <li><span style='background:#bdd7e7;'></span>10%</li>
+    <li><span style='background:#eff3ff;'></span><10%</li>
+    <li><span style='background:#fee5d9;'></span><10%</li>
+    <li><span style='background:#fcae91;'></span>10%</li>
+    <li><span style='background:#fb6a4a;'></span>25%</li>
+    <li><span style='background:#cb181d;'></span>>50%</li>
+  </ul>
+</div>
+<div class='legend-source'>Data Source: <a href="https://townhall.com/">Townhall</a></div>
+<div class='legend-source'>Code Source: <a href="https://tilemill-project.github.io/tilemill/docs/guides/advanced-legends/">Legend</a>
+<a href="https://bl.ocks.org/mjfoster83/82f366218ac32351e0d434c1d959d99e">Chloropleth map</a></div>
+</center>
+</div>
+
+</body>
