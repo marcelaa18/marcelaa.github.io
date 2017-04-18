@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Mapping with D3</title>
+	<script src="http://d3js.org/d3.v4.min.js" charset="utf-8"></script>
+	<script src="election_results_2000_2016.json"></script>
+	<link href="https://fonts.googleapis.com/css?family=Abhaya+Libre" rel="stylesheet">
+
+	<style>
+	body {
+    position: absolute;
+    font-family: "Abhaya+Libre", serif;
+    margin-left: 200px
+	}
+	h1, h2 {
+	    position: relative;
+	    left: 10px;
+	    font-size: 2.5em;
+	    font-weight: 100;
+	}
+	h2 {
+	    top: 30px;
+	    font-size: 1em;
+	}
+	
+	/* ADD CSS FOR #sliderContainer */
+	#sliderContainer {
+	    text-align: center;
+	    position: relative;
+	    top: 600px;
+	}
+
+	table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100px;
+    background-color: #ffffff;
+    font-size: 13px
+    margin-top: 40px;
+
+	}
+
+	td, th {
+	    border: 0px;
+	    text-align: left;
+	    padding: 8px;
+	}
+  
+	  .my-legend .legend-source {
+	    font-size: 70%;
+	    color: #999;
+	    clear: both;
+	    margin-left: 160px;
+	    }
+  
+</style>
+	</style>
+
+
+</head>
+
+
+<body>
+<div>
+<center>
+	<h1>Election Results from 2000-2016</h1>
+	<h2></h2>
+</center>
+</div>
+<div>
+	<table align="center", style="position:relative" >
+	  <tr>
+	    <th>Democrat</th>
+	    <th> Republican</th>
+	  </tr>
+	  <tr>
+	    <td bgcolor="#2171b5"></td>
+	    <td bgcolor="#cb181d"></td>
+	  </tr>
+	</table>
+</div>
+
+	<div id="sliderContainer">
+    <input id="timeslide" type="range" min="0" max="4" value="0" step="1"/><br>
+    <span id="range">2000</span>
+	</div>
+	
+	<script>
+		// Width and Height of the whole visualization
+		var width = 700;
+		var height = 580;
+
+		var inputValue = null;
+		var year = ["2000","2004","2008", "2012", "2016"];
+
+		// Create SVG
+		var svg = d3.select( "body" )
+		    .append( "svg" )
+		    .attr( "width", width )
+		    .attr( "height", height );
+
+
+		// Set Projection Parameters
+		var albersProjection = d3.geoAlbers()
+		    .scale( 1000 )
+		    .translate( [width/2,height/2] );
+
+		var geoPath = d3.geoPath()
+		    .projection( albersProjection );
+		
+		// Append empty placeholder g element to the SVG
+		// g will contain geometry elements
+	
+		var states = svg.append( "g" );
+
+		var tooltip = d3.select("states")
+			.append("div")
+			.style("position", "absolute")
+			.style("font-family", "'Open Sans', sans-serif")
+			.style("font-size", "12px")
+			.style("z-index", "10")
+			.style("visibility", "hidden");
+
+		states.selectAll( "path" )
+			.data( election_results_json.features )
+			.enter()
+			.append( "path" )
+			.attr( "fill", initialDate )
+			.attr( "stroke", "#ffffff" )
+			.attr( "d", geoPath )
+			.attr( "class", "results");
+			
+			
+
+			// when the input range changes update the value 
+		d3.select("#timeslide").on("input", function() {
+		    update(+this.value);
+		});
+
+		// update the fill of each SVG of class "results" with value
+		// Creating our inputValue variable (from the slider)
+		function update(value) {
+		    document.getElementById("range").innerHTML=year[value];
+		    inputValue = year[value];
+		    d3.selectAll(".results")
+		        .attr("fill", dateMatch);
+		}
+
+
+		// getting whats in the dataset, and checking it
+		// set match value
+		function dateMatch(data, value) {
+			console.log(data);
+			console.log(inputValue);
+		    if (inputValue == 2000) {
+		        if (data.properties.elect2000 == "R") {
+					return "#cb181d";
+				}else if (data.properties.elect2000 == "D") {
+					return "#2171b5";
+		        	
+		        }
+		        
+		    } else if (inputValue == 2004) {
+		        if (data.properties.elect2004 == "R") {
+					return "#cb181d";
+				}else if (data.properties.elect2004 == "D") {
+					return "#2171b5";
+		        }
+		        
+		    } else if (inputValue == 2008) {
+		        if (data.properties.elect2008 == "R") {
+					return "#cb181d";
+				}else if (data.properties.elect2008 == "D") {
+					return "#2171b5";
+		        }
+
+		    } else if (inputValue == 2012) {
+		        if (data.properties.elect2012 == "R") {
+					return "#cb181d";
+				}else if (data.properties.elect2012 == "D") {
+					return "#2171b5";
+		        }
+
+		    } else if (inputValue == 2016) {
+		        if (data.properties.elect2016 == "R") {
+					return "#cb181d";
+				}else if (data.properties.elect2016 == "D") {
+					return "#2171b5";
+		        }
+		            
+		    } else {
+		        return "#000099";
+		    };
+
+
+		}
+
+
+
+		function initialDate(data, value){
+                 if (data.properties.elect2000 == "R") {
+                    this.parentElement.appendChild(this);
+                 return "#cb181d ";
+               } else if (data.properties.elect2000 == "D") {
+                 return "#2171b5 ";    
+               }}
+
+
+	</script>	
+	
+	<br>
+	<br>
+	<br>
+	<br>
+
+
+	<div class='legend-source'>Data Source: <a href="https://www.archives.gov/federal-register/electoral-college/historical.html">National Archives and Records Administration</a></div>
+
+	<h4>Created by Marcela Angel</h4>
+
+
+
+</body>
+</html>
