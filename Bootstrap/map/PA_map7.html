@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<!-- <link href="css/legend2.css" rel="stylesheet" />
+ --><link href="https://fonts.googleapis.com/css?family=Lato:300,400,500,600,700" rel="stylesheet">
+
+<html lang="en">
+
+<meta charset="utf-8">
+
+
+
+
+<style>
+  .states {
+    fill: none;
+    stroke: #fff;
+    stroke-width: 1px;
+    stroke-linejoin: round;
+  }
+
+
+
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+#main {
+  width: 960px;
+}
+.axis .domain {
+  display: none;
+}
+
+.bubble {
+  fill: white;
+  fill-opacity: .6;
+  stroke: #fff;
+  stroke-width: .5px;
+}
+
+.toggletip { 
+    position: absolute;     
+    text-align: center;             
+    padding: 4px;       
+    font-size: 13px;    
+    background: white; 
+    border: 0px;    
+    border-radius: 2px;     
+    pointer-events: none; 
+    font-family: "lato"; 
+    }
+
+div.tooltip { 
+    position: absolute;     
+    text-align: center;             
+    padding: 4px;       
+    font-size: 13px;    
+    background: white; 
+    border: 0px;    
+    border-radius: 2px;     
+    pointer-events: none; 
+    font-family: "lato"; 
+    }
+
+
+  .my-legend .legend-title {
+    text-align: auto;
+    margin-bottom: 0px;
+    margin-left: 90px;
+    font-weight: bold;
+    font-size: 90%;
+    font-family: "lato";
+    }
+
+  .my-legend .legend-subtitle {
+    text-align: auto;
+    margin-bottom: 10px;
+    margin-left: 90px;
+    font-style: italic;
+    font-size: 90%;
+    font-family: "lato";
+    }
+
+  .my-legend .legend-Clinton {
+    text-align: auto;
+    margin-bottom: 8px;
+    margin-left: 90px;
+    font-size: 90%;
+    font-family: "lato";
+    }
+
+  .my-legend .legend-scale ul {
+    float: auto;
+    align-content: auto;
+    margin-left: 50px;
+    margin-right: auto;
+    list-style: none;
+    font-family: "lato";
+    }
+  .my-legend .legend-scale ul li {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    float: left;
+    width: 50px;
+    margin-bottom: 6px;
+    text-align: auto;
+    font-size: 80%;
+    list-style: none;
+    font-family: "lato";
+    }
+  .my-legend ul.legend-labels li span {
+    display: block;
+    align-items: auto;
+    float: center;
+    height: 15px;
+    font-family: "lato";
+    width: 50px;
+    }
+  .my-legend .legend-source {
+    font-size: 70%;
+    color: #999;
+    margin-left: 170px;
+    font-family: "lato";
+    clear: both;
+    }
+  .my-legend a {
+    color: #777;
+    }
+
+#toggleContainer {
+            text-align: left;
+            font-family: "lato";
+            position: relative;
+            top: 50px;
+            left: 450px;
+        }
+        /* The switch - the box around the slider */
+        .switch {
+          position: relative;
+          display: inline-block;
+          width: 60px;
+          height: 34px;
+        }
+
+        /* Hide default HTML checkbox */
+        .switch input {display:none;}
+
+        /* The slider */
+        .slider {
+          position: absolute;
+          cursor: pointer;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-color: #ccc;
+          -webkit-transition: .4s;
+          transition: .4s;
+        }
+
+        .slider:before {
+          position: absolute;
+          content: "";
+          height: 26px;
+          width: 26px;
+          left: 4px;
+          bottom: 4px;
+          background-color: white;
+          -webkit-transition: .4s;
+          transition: .4s;
+        }
+
+        input:checked + .slider {
+          background-color: #696969;
+        }
+
+        input:focus + .slider {
+          box-shadow: 0 0 1px #A9A9A9;
+        }
+
+        input:checked + .slider:before {
+          -webkit-transform: translateX(26px);
+          -ms-transform: translateX(26px);
+          transform: translateX(26px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+          border-radius: 34px;
+        }
+
+        .slider.round:before {
+          border-radius: 50%;
+        }
+    
+      .label {
+        z-index: 10;
+        pointer-events: none;
+        text-anchor: middle;
+        font-size: 0.9rem;
+        text-shadow: 0 0 3px #fff;
+        fill: rgb(70, 70, 70);
+        margin-top: 70px;
+        font-family: "lato";
+      }
+</style>  
+
+
+</style>
+
+<body>
+
+<div id="toggleContainer">
+        <table>
+<!-- Code for potential city toggle
+            <tr>
+                <td><label class="switch">
+                    <input id="rodent_toggle" type="checkbox">
+                    <div class="slider round"></div>
+                </label></td>
+                <td>County Names</td>
+            </tr> -->
+            <tr>
+                <td><label class="switch">
+                    <input id="hoods_toggle" type="checkbox">
+                    <div class="slider round"></div>
+                </label></td>
+                <td>CDBG Funding per Person</td>
+            </tr>
+        </table>
+    </div>
+
+
+<div id="map"></div>
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://d3js.org/d3-array.v1.min.js"></script>
+<script src="https://d3js.org/d3-geo.v1.min.js"></script>
+<script src="https://d3js.org/d3-queue.v3.min.js"></script>
+<script src="https://d3js.org/topojson.v2.min.js"></script>
+<script>
+
+
+// set width and height of graphic
+var width = 1000,
+    height = 580;
+    scale_thousand = 1000,
+
+//Centre County is the geographical center of Pennsylvania.
+centre_county = [-77.82, 40.91];
+
+var projection = d3.geoAlbers()
+        .scale( 11400 )
+        .rotate( [77.82,0] )
+        .center( [0, 40.91] )
+        .translate( [width/2,height/2] );
+
+// d3 geopath for projection
+var path = d3.geoPath()
+    .projection(projection);
+
+// create SVG elements in map HTML element
+var svg = d3.select("#map").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+// set color
+var color = d3.scaleThreshold()
+    .domain([-0.5, -0.25, -0.1, 0, 0.1, 0.25, 0.5])
+    .range(["#306c94", "#569ebe", "#7fd4eb", "#7fd4eb", "#fd8393", "#fd8393", "#ff5176", "#e5263f"]);
+
+//hover
+var tooltip = d3.select("body")
+  .append("div")
+  .attr('class', 'tooltip')
+  .style("position", "absolute")
+  .style("z-index", "10")
+  .style("visibility", "hidden");
+
+var radius = {};
+
+
+// queue up the datasets, run 'ready' when loaded
+d3.queue()
+    .defer(d3.json, "data/us.json")
+    .defer(d3.tsv, "data/results.tsv")
+    .defer(d3.tsv, "data/results_CDBG_V2.tsv")
+    .defer(d3.csv, "data/pa_cities.csv")
+    .await(ready);
+
+// create the graphic with this runction
+function ready(error, us, election2016_county, results_CDBG_V2) {
+  if (error) throw error;
+
+  var rateById = {}; // Create empty object for holding dataset
+  var cdbgById = {};
+  var countyById = {};
+  election2016_county.forEach(function(d) {
+    rateById[d.id] = +d.victory_margin; // Create property for each ID, give it value from rate
+    // important: cast rate to numeric value (+)
+  });
+  results_CDBG_V2.forEach(function(d) {
+    //console.log(d);
+    cdbgById[d.id] = +d.field_name; // Create property for each ID, give it value from rate
+    // important: cast rate to numeric value (+)
+  });
+  results_CDBG_V2.forEach(function(d) {
+    //console.log(d);
+    countyById[d.id] = d.county_name; 
+  });
+  console.log(cdbgById);
+  
+  // create and style counties
+  svg.append("g")
+      .attr("class", "counties")
+    .selectAll("path")
+      .data(topojson.feature(us, us.objects.counties).features)
+    .enter().append("path")
+      .attr("d", path)
+      .style("fill", function(d) {
+        //console.log(color(rateById[d.id]));
+        if(rateById[d.id] == undefined){
+          return "#e0eeee";
+        } else {
+          return color(rateById[d.id]);
+        }
+      });
+
+  // create state outlines
+  svg.append("path")
+      .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a.id !== b.id; }))
+      .attr("class", "states")
+      .attr("d", path);
+
+//circles 
+  svg.append("g")
+      .attr("class", "bubble")
+    .selectAll("circle")
+      .data(topojson.feature(us, us.objects.counties).features)
+    .enter().append("circle")
+      .attr("transform", function(d) {
+        return "translate(" + path.centroid(d) + ")";
+      })
+      .attr("r", function(d) {
+        return (cdbgById[d.id]);})
+
+        .on("mouseover", function(d){return tooltip.style("visibility", "visible").text(cdbgById[d.id] + "dollars per person");})
+        .on("mousemove", function(d){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px").html("<b>" +countyById[d.id] + "</b>" + "<br>" + "$" + cdbgById[d.id] + " per person " 
+          );})
+        .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
+      
+//code for city labels
+// svg.selectAll(".place-label")
+//     .data(d3.csv, "data/pa_cities.csv")
+//   .enter().append("text")
+//     .attr("class", "place-label")
+//     .attr("transform", function(d) { return "translate(" + projection([d.lon, d.lat]) + ")"; })
+//     .attr("dy", ".35em")
+//     .text(function(d) { return d.place; });
+
+var map = d3.csv("data/pa_cities.csv", function(d) {
+  return {
+    lat : +d.lat,
+    long : +d.long,
+    place : d.place
+  };
+}, function(error, rows) {
+  cityData = rows;
+  console.log(cityData);
+  drawCityLabels();
+});
+
+function drawCityLabels(){
+
+svg.append("g").attr("class", "label-group")
+  .selectAll(".label")
+  .data(cityData)
+  .enter()
+  .append("text")
+  .attr("class", "label")
+  .attr("d", path)
+  .attr("dy", "-8px")
+  .attr("transform", function(d) {return "translate(" + projection([d.long,d.lat]) + ")";})
+  .text(function(d) {
+    console.log(d.place);
+    return d.place;
+  });
+
+  svg.selectAll(".pin")
+  .data(cityData)
+  .enter()
+  .append("circle", ".pin")
+  .attr("d", path)
+  .attr("r", "3px")
+  .attr("fill", "black")
+  .attr("transform", function(d) {return "translate(" + projection([d.long,d.lat]) + ")";})
+
+  };
+
+};
+
+
+
+//toggle code
+  var countiesCheckbox = document.querySelector('input[id="hoods_toggle"]');
+  var cdbgCheckbox = document.querySelector('input[id="rodent_toggle"]');
+
+    countiesCheckbox.onchange = function() {
+      if(this.checked) {
+        d3.selectAll(".bubble").attr("visibility", "visible");
+      } else {
+        d3.selectAll(".bubble").attr("visibility", "hidden");
+      }
+    };
+
+//Code for potential city toggle
+    // cdbgCheckbox.onchange = function() {
+    //   if(this.checked) {
+    //     d3.selectAll(".toggletip").attr("visibility", "visible");
+    //   } else {
+    //     d3.selectAll(".toggletip").attr("visibility", "hidden");
+    //   }
+    // };
+
+
+</script>
+
+
+<img src="legend2.png" alt="legend" style="width:1000px">
+
+
+<!-- </script>
+
+<br>
+<div class='my-legend'>
+<div class='legend-title'>2016 Presidential Election: Margin of Victory by County</div>
+<div class='legend-subtitle'>circle size indicates CDBG funding per person</div>
+<div class='legend-Clinton'>Clinton &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Trump</div>
+<div class='legend-scale'>
+  <ul class='legend-labels'>
+    <li><span style='background:#306c94;'></span>>50%</li>
+    <li><span style='background:#569ebe;'></span>25%</li>
+    <li><span style='background:#7fd4eb;'></span>10%</li>
+    <li><span style='background:#fd8393;'></span>10%</li>
+    <li><span style='background:#ff5176;'></span>25%</li>
+    <li><span style='background:#e5263f;'></span>>50%</li>
+  </ul>
+</div>
+  -->
+
+
+</div>
+
+
+</body>
+</html>

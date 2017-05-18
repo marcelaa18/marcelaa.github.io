@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+path {
+  stroke: #fff;
+}
+
+</style>
+<body>
+<script src="//d3js.org/d3.v3.min.js"></script>
+<script>
+
+var width = 960,
+    height = 700,
+    radius = (Math.min(width, height) / 2) - 50;
+
+var formatNumber = d3.format(",d");
+
+var x = d3.scale.linear()
+    .range([0, 2 * Math.PI]);
+
+var y = d3.scale.sqrt()
+    .range([0, radius]);
+
+var main_categories = ["Acquisition", "Economic Development", "Other", "Public Services", "Housing", "General Administration", "Public Facilities"];
+
+var color = d3.scale.ordinal()
+  .domain(["Acquisition", "Economic Development", "Public Services", "Public Facilities", "Housing", "General Administration", "Other"])
+  .range(["65B3C2","45A2B9","2C5985","368FAE", "9DD3D1", "316F96", "BCE4D8", "E0EEEE"]);
+
+var partition = d3.layout.partition()
+    .value(function(d) { return d.size; });
+
+var arc = d3.svg.arc()
+    .startAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x))); })
+    .endAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x + d.dx))); })
+    .innerRadius(function(d) { return Math.max(0, y(d.y)); })
+    .outerRadius(function(d) { return Math.max(0, y(d.y + d.dy)); });
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height)
+  .append("g")
+    .attr("transform", "translate(" + width / 2 + "," + (height / 2) + ")");
+
+
+d3.json("flare.json", function(error, root) {
+  if (error) throw error;
+
+  var g =  svg.selectAll("g")
+      .data(partition.nodes(root))
+    .enter().append("g");
+
+
+  var counter = 0;
+
+  var tip = d3.select('body')
+    .append('div')
+      .attr('class', 'tip')
+      .html('I am a tooltip...')
+      .style('border', '1px solid steelblue')
+      .style('padding', '5px')
+      .style('position', 'absolute')
+      .style('display', 'none')
+      .on('mouseover', function(d, i) {
+        tip.transition().duration(0);
+      })
+      .on('mouseout', function(d, i) {
+        tip.style('display', 'none');
+      });
+
+  var path = g.append("path")
+      .attr("id", function(d){
+        return d.name;
+
+      })
+      .attr("d", arc)
+      .style("fill", function(d) {
+        return color((d.children ? d : d.parent).name);
+      })
+      .each(function(d,i) {
+        // get first arc section
+        var firstArcSection = /(^.+?)L/;
+        // get arc statement
+
+
+        if ((firstArcSection.exec(d3.select(this).attr("d")) != null) && (d.depth == 1)) {
+          var newArc = firstArcSection.exec( d3.select(this).attr("d"))[1];
+          // replace the commas
+          //newArc = newArc.replace(/,/g , " ");
+
+          svg.append("path")
+            .attr("class", "hiddenLine")
+            .attr("id", "hiddenLine"+counter)
+            .attr("d", newArc)
+            .style("fill","none");
+
+          svg.selectAll(".labelText")
+            .data(main_categories)  // SEVEN CATEGORIES
+            .enter()
+            .append("text")
+            .attr("dy", -70) // vertical-align
+            .attr('class','labelText')
+            .append("textPath") //appending text path
+            .style("text-anchor","middle") //place the text halfway on the arc
+            .attr("startOffset", "50%")
+            .attr("xlink:href", function(d,i){
+              // THIS IS THE SPOT
+              // console.log(d.name);
+              // if (d.depth == 1) {
+                console.log(i);
+                return "#hiddenLine"+i;
+              // } else {
+              //   //console.log("none!");
+              // }
+            })
+            .text(function(d) { return d; });
+
+            counter = counter + 1
+          } else {
+            //console.log("null found!");
+          }
+      })
+      .on("click", click)
+      .on("mouseover", function(d) {
+        console.log(d);
+        // create tooltip
+        tip.transition().duration(0);
+        tip.style('top', d3.select(this).attr("cy") + "px"); // get mouse y position
+        tip.style('left', d3.select(this).attr("cx") + "px"); // get mouse x position
+        tip.style('display', 'block');
+      })
+      .on("mouseout", function(d) {
+        console.log(d.name)
+        // create popup
+        tip.transition()
+        .delay(500)
+        .style('display', 'none');
+        });
+
+
+
+
+// M -162.56446671405118,-225.03213288026848 A 277.60883751542684,277.60883751542684 0 0,1 -77.40600593894726,-266.5989064329528
+
+
+    // .append("title")
+    //   .text(function(d) { return d.name + "\n" + formatNumber(d.value); });
+
+
+function click(d) {
+
+  console.log(this);
+  // fade out all text elements
+  //text.transition().attr("opacity", 0);
+  d3.selectAll(".labelText").transition().attr("opacity",0);
+  d3.selectAll(".hiddenLine").transition().style("stroke","none");
+
+  if (this.id == "CDBG") {
+    d3.selectAll(".labelText").transition().attr("opacity",1);   
+  }
+
+  path.transition()
+      .duration(750)
+      .attrTween("d", arcTween(d))
+      .each("end", function(e, i) {
+          // check if the animated element's data e lies within the visible angle span given in d
+          if (e.x >= d.x && e.x < (d.x + d.dx)) {
+            // get a selection of the associated text element
+            var arcText = d3.select(this.parentNode).select("text");
+            // fade in the text element and recalculate positions
+            arcText.transition().duration(750)
+              .attr("opacity", 1)
+              .attr("transform", function() { return "rotate(" + computeTextRotation(e) + ")" })
+              .attr("x", function(d) { return y(d.y); });
+          }
+      });
+  }
+
+});
+
+d3.select(self.frameElement).style("height", height + "px");
+
+// Interpolate the scales!
+function arcTween(d) {
+  var xd = d3.interpolate(x.domain(), [d.x, d.x + d.dx]),
+      yd = d3.interpolate(y.domain(), [d.y, 1]),
+      yr = d3.interpolate(y.range(), [d.y ? 20 : 0, radius]);
+      console.log(radius);
+  return function(d, i) {
+    return i
+        ? function(t) { return arc(d); }
+        : function(t) { x.domain(xd(t)); y.domain(yd(t)).range(yr(t)); return arc(d); };
+  };
+}
+
+function computeTextRotation(d) {
+  return (x(d.x + d.dx / 2) - Math.PI / 2) / Math.PI * 180;
+}
+
+</script>

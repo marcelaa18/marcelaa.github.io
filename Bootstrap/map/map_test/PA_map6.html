@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<link href="css/legend2.css" rel="stylesheet" />
+
+<html lang="en">
+
+<meta charset="utf-8">
+
+
+
+
+<style>
+  .states {
+    fill: none;
+    stroke: #fff;
+    stroke-linejoin: round;
+  }
+
+
+
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+#main {
+  width: 960px;
+}
+.axis .domain {
+  display: none;
+}
+
+.bubble {
+  fill: white;
+  fill-opacity: .6;
+  stroke: #fff;
+  stroke-width: .5px;
+}
+
+
+</style>
+
+<body>
+<div id="map"></div>
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://d3js.org/d3-array.v1.min.js"></script>
+<script src="https://d3js.org/d3-geo.v1.min.js"></script>
+<script src="https://d3js.org/d3-queue.v3.min.js"></script>
+<script src="https://d3js.org/topojson.v2.min.js"></script>
+<script>
+
+
+// set width and height of graphic
+var width = 960,
+    height = 500;
+    scale_thousand = 1000,
+
+//Centre County is the geographical center of Pennsylvania.
+centre_county = [-77.82, 40.91];
+
+var projection = d3.geoAlbers()
+        .scale( 12000 )
+        .rotate( [77.82,0] )
+        .center( [0, 40.91] )
+        .translate( [width/2,height/2] );
+
+// d3 geopath for projection
+var path = d3.geoPath()
+    .projection(projection);
+
+// create SVG elements in map HTML element
+var svg = d3.select("#map").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+// set color
+var color = d3.scaleThreshold()
+    .domain([-0.5, -0.25, -0.1, 0, 0.1, 0.25, 0.5])
+    .range(["#306c94", "#569ebe", "#569ebe", "#7fd4eb", "#ff5176", "#fd8393", "#ff556b", "#e5263f"]);
+
+
+// queue up the datasets, run 'ready' when loaded
+d3.queue()
+    .defer(d3.json, "data/us.json")
+    .defer(d3.tsv, "data/results.tsv")
+    .defer(d3.tsv, "data/results_CDBG_V2.tsv")
+    .await(ready);
+
+// create the graphic with this runction
+function ready(error, us, election2016_county, results_CDBG_V2) {
+  if (error) throw error;
+
+  var rateById = {}; // Create empty object for holding dataset
+  var cdbgById = {};
+  election2016_county.forEach(function(d) {
+    rateById[d.id] = +d.victory_margin; // Create property for each ID, give it value from rate
+    // important: cast rate to numeric value (+)
+  });
+  results_CDBG_V2.forEach(function(d) {
+    //console.log(d);
+    cdbgById[d.id] = +d.field_name; // Create property for each ID, give it value from rate
+    // important: cast rate to numeric value (+)
+  });
+  console.log(cdbgById);
+  
+  // create and style counties
+  svg.append("g")
+      .attr("class", "counties")
+    .selectAll("path")
+      .data(topojson.feature(us, us.objects.counties).features)
+    .enter().append("path")
+      .attr("d", path)
+      .style("fill", function(d) {
+        //console.log(color(rateById[d.id]));
+        if(rateById[d.id] == undefined){
+          return "#e0eeee";
+        } else {
+          return color(rateById[d.id]);
+        }
+      });
+
+  // create state outlines
+  svg.append("path")
+      .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a.id !== b.id; }))
+      .attr("class", "states")
+      .attr("d", path);
+
+//circles not working
+  svg.append("g")
+      .attr("class", "bubble")
+    .selectAll("circle")
+      .data(topojson.feature(us, us.objects.counties).features)
+    .enter().append("circle")
+      .attr("transform", function(d) {
+        return "translate(" + path.centroid(d) + ")";
+      })
+      .attr("r", function(d) {
+        //console.log(rateById[d.id]); // dataset values
+        return cdbgById[d.id];
+      })
+}
+
+
+
+
+
+</script>
+
+
+
+
+</script>
+
+
+
+
+
+</body>
+</html>

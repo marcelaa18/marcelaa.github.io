@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>PA Test</title>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://d3js.org/d3-array.v1.min.js"></script>
+<script src="https://d3js.org/d3-geo.v1.min.js"></script>
+<script src="https://d3js.org/d3-queue.v3.min.js"></script>
+<script src="https://d3js.org/topojson.v2.min.js"></script>
+<style>
+</style>
+<header>
+  <div class="column">
+    <div class="name">test</div>
+  </div>
+  <div
+id="tooltip" class="hidden"><p><strong><span
+id="value">100</span> County</strong></p></div>
+</header>
+<body>
+<script>
+	
+//Width and height
+var width = 960,
+    height = 600,
+    scale_thousand = 1000,
+
+//Centre County is the geographical center of Pennsylvania.
+centre_county = [-77.82, 40.91];
+
+
+var projection = d3.geoAlbers()
+        .scale( 12000 )
+        .rotate( [77.82,0] )
+        .center( [0, 40.91] )
+        .translate( [width/2,height/2] );
+
+
+//Create SVG element
+var svg = d3.select("body")
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height);
+
+// set color
+var color = d3.scaleThreshold()
+    .domain([-0.5, -0.25, -0.1, 0.0, 0.1, 0.25, 0.5])
+    .range(['#2171b5','#6baed6','#bdd7e7','#eff3ff','#fee5d9','#fcae91','#fb6a4a','#cb181d']);
+
+
+
+// queue up the datasets, run 'ready' when loaded
+d3.queue()
+    .defer(d3.json, "pa_counties.json")
+    .defer(d3.tsv, "results.tsv")
+    .await(ready);
+
+// create the graphic with this runction
+function ready(error, us, results2) {
+  if (error) throw error;
+
+  var victory_marginById = {}; // Create empty object for holding dataset
+
+  results.forEach(function(d) {
+    victory_marginById[d.id] = +d.victory_margin; // Create property for each ID, give it value from victory_margin
+    // important: cast rate to numeric value (+)
+  });
+  
+  // create and style counties
+  svg.append("g")
+      .attr("class", "counties")
+    .selectAll("path")
+      .data(topojson.feature(us, us.objects.counties).features)
+    .enter().append("path")
+      .attr("d", path)
+      .style("fill", function(d) { return color(victory_marginById[d.id]); });
+
+  // create state outlines
+  svg.append("path")
+      .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a.id !== b.id; }))
+      .attr("class", "states")
+      .attr("d", path);
+}
+
+</script>
+
+</body>
+</html>

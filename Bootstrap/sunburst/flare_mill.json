@@ -1,0 +1,111 @@
+{
+ "name": "CDBG", "size": 178430.41,
+ "children": [
+    {"name": "Acquisition", "size": 9741.36,
+      "children": [
+        {"name":"Acquisition of Real Property","size":1423.45},
+        {"name":"Clearance and Demolition","size":6036.77},
+        {"name":"Cleanup of Contaminated Sites","size":1412.10},
+        {"name":"Disposition","size":868.27},
+        {"name":"Relocation","size":0.78}
+      ]},
+    {"name": "Economic Development", "size": 13633.15,
+      "children": [
+        {"name":"CI Land Acquisition/Disposition","size":22.81},
+        {"name":"CI Infrastructure Development","size":819.20},
+        {"name":"CI Building Acquisition, Construction, Rehabilitation","size":347.61},
+        {"name":"ED Direct Financial Assistance to For-Profits","size":8768.00},
+        {"name":"ED Technical Assistance","size":1448.58},
+        {"name":"Micro-Enterprise Assistance","size":1707.64},
+        {"name":"Other Commercial/Industrial Improvements","size":275.44},
+        {"name":"Rehab; Publicly or Privately-Owned Commercial/Industrial","size":243.89}
+      ]},
+
+    {"name": "Public Services", "size": 17333.91,
+          "children": [
+            {"name":"Abused and Neglected Children ","size":5.00},
+            {"name":"Battered and Abused Spouses","size":89.64},
+            {"name":"Child Care Services","size":252.50},
+            {"name":"Crime Awareness","size":1894.28},
+            {"name":"Employment Training","size":782.29},
+            {"name":"Food Banks","size":493.42},
+            {"name":"Fair Housing Activities (if CDGS, then subject to 15% cap)","size":162.41},
+            {"name":"Handicapped Services","size":299.10},
+            {"name":"Health Services  ","size":163.83},
+            {"name":"Home Ownership Assistance (Not Direct)","size":1.57},
+            {"name":"Housing Counseling","size":5566.13},
+            {"name":"Legal Services","size":398.04},
+            {"name":"Mental Health Services","size":1.20},
+            {"name":"Neighborhood Cleanups","size":95.94},
+            {"name":"Operating Costs of Homeless/AIDS Patients Programs","size":917.98},
+            {"name":"Public Services (General)","size":3901.10},
+            {"name":"Senior Services ","size":504.51},
+            {"name":"Subsistence Payment","size":127.10},
+            {"name":"Substance Abuse Services","size":12.61},
+            {"name":"Transportation Services","size":82.25},
+            {"name":"Tenant/Landlord Counseling","size":136.30},
+            {"name":"Youth Services ","size":1446.73}
+          ]},
+
+    {"name": "Housing", "size": 39013.16,
+      "children": [
+        {"name":"Acquisition for Rehabilitation ","size":367.41},
+        {"name":"Code Enforcement","size":3120.70},
+        {"name":"Construction of Housing","size":1263.41},
+        {"name":"Energy Efficient Improvements","size":6.00},
+        {"name":"Direct Homeownership Assistance","size":253.51},
+        {"name":"Housing Services","size":178.54},
+        {"name":"Lead-Based/Lead Hazard Test/Abate","size":9.42},
+        {"name":"Public Housing Modernization","size":486.63},
+        {"name":"Rehab; Multi-Unit Residential ","size":3163.11},
+        {"name":"Rehab; Single-Unit Residential ","size":21222.44},
+        {"name":"Rehabilitation Administration ","size":8941.83},
+        {"name":"Residential Historic Preservation","size":0.17}
+      ]},
+
+    {"name": "General Administration", "size": 33394.14,
+      "children": [
+        {"name":"General Program Administration","size":30413.07},
+        {"name":"Fair Housing Activities (subject to 20% Admin Cap)","size":325.95},
+        {"name":"HOME CHDO Operating Expenses (subject to 5% cap)","size":2.98},
+        {"name":"Indirect Costs","size":81.38},
+        {"name":"Planning  ","size":1359.56},
+        {"name":"Public Information","size":185.87},
+        {"name":"Submissions or Applications for Federal Program","size":5.04},
+        {"name":"State Administration","size":1020.30}
+      ]},
+
+      {"name": "Other", "size": 8024.63,
+      "children": [
+        {"name":"State CDBG Technical Assistance to Grantees","size":331.90},
+        {"name":"CDBG Non-profit Organization Capacity Building","size":4018.25},
+        {"name":"Interim Assistance","size":154.02},
+        {"name":"Planned Repayment of Section 108 Loan Principal","size":3520.47}
+      ]},
+
+    {"name": "Public Facilities", "size": 57290.04,
+      "children": [
+        {"name":"Abused and Neglected Children Facilities","size":12.72},
+        {"name":"Childcare Centers","size":3.45},
+        {"name":"Fire Station/Equipment ","size":1544.26},
+        {"name":"Flood Drainage Improvements ","size":872.82},
+        {"name":"Handicapped Centers","size":550.92},
+        {"name":"Health Facilities","size":134.24},
+        {"name":"Homeless Facilities (not operating costs) ","size":577.51},
+        {"name":"Neighborhood Facilities ","size":846.57},
+        {"name":"Non-Residential Historic Preservation","size":149.29},
+        {"name":"Parking Facilities ","size":539.70},
+        {"name":"Parks, Recreational Facilities ","size":4821.41},
+        {"name":"Public Facilities and Improvement (General)","size":9370.11},
+        {"name":"Senior Centers ","size":960.15},
+        {"name":"Senior Services ","size":15.72},
+        {"name":"Sidewalks ","size":4866.14},
+        {"name":"Solid Waste Disposal Improvements ","size":657.81},
+        {"name":"Street Improvements","size":18303.96},
+        {"name":"Youth Centers","size":169.25},
+        {"name":"Youth Services ","size":2.98},
+        {"name":"Water/Sewer Improvements ","size":12891.02}
+      ]
+    }
+  ]
+}
